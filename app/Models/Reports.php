@@ -22,5 +22,25 @@ class Reports extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function images()
+    {
+        return $this->hasMany(ReportImages::class);
+    }
+
+    public function getImagesAttribute()
+    {
+        return $this->images()->get();
+    }
+
+    public function getBeforeImagesAttribute()
+    {
+        return $this->images()->where('is_before', true)->get();
+    }
+
+    public function getAfterImagesAttribute()
+    {
+        return $this->images()->where('is_before', false)->get();
+    }
+
 
 }
