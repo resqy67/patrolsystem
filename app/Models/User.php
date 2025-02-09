@@ -24,6 +24,10 @@ class User extends Authenticatable
         'role',
     ];
 
+    protected $casts = [
+        'role' => 'string',
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -45,5 +49,36 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // /**
+    //  * Get the role of the user.
+    //  *
+    //  * @return string
+    //  */
+    // public function getRoleAttribute(): string
+    // {
+    //     return $this->role;
+    // }
+
+    // /**
+    //  * Set the role of the user.
+    //  *
+    //  * @param string $role
+    //  * @return void
+    //  */
+    // public function setRoleAttribute(string $role): void
+    // {
+    //     $this->role = $role;
+    // }
+
+    /**
+     * Get the reports of the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reports(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Reports::class);
     }
 }
