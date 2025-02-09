@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900">
                     <div class="flex justify-between mb-4">
                         <div>
-                            <h1 class="text-2xl font-semibold text-gray-800">Patrol</h1>
+                            <h1 class="text-2xl font-semibold text-gray-800">Daftar User</h1>
                         </div>
                     </div>
                     <x-mary-table :headers="$headers" :rows="$users" striped>

@@ -9,11 +9,13 @@ use App\Models\Reports;
 use App\Models\ReportImages;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Livewire\WithPagination;
 
 class Patrol extends Component
 {
     public PatrolForm $form;
     use WithFileUploads;
+    use WithPagination;
 
     public bool $showModal = false;
     public bool $showDelete = false;
@@ -61,7 +63,7 @@ class Patrol extends Component
             ['key' => 'status', 'label' => 'Status', 'class' => 'w-32 text-black'],
             ['key' => 'action', 'label' => 'Aksi', 'class' => 'w-72 text-black'],
         ];
-        $reports = Reports::with('user', 'images')->get();
+        $reports = Reports::with('user', 'images')->paginate(10);
         // dd($reports);
         return view('livewire.pages.patrol', [
             'reports' => $reports,

@@ -50,11 +50,11 @@
                             <x-mary-button class="bg-blue-500 text-white" label="Export PDF" @click="$wire.showExport = true" />
                         </div>
                     </div>
-                    <div>
+                    <div data-theme="light">
                         @if ($reports->isEmpty())
                             <div class="text-center text-gray-500">Data tidak ditemukan</div>
                         @else
-                            <x-mary-table :headers="$headers" :rows="$reports" no-hover>
+                            <x-mary-table :headers="$headers" :rows="$reports" no-hover with-pagination>
                                 @scope('cell_name', $report)
                                     {{ $report->user->name }}
                                 @endscope
