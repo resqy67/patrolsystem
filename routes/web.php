@@ -6,7 +6,12 @@ use App\Livewire\Pages\User\UserDashboard;
 use App\Livewire\Pages\Patrol;
 use App\Livewire\Pages\Admin\Employee;
 
-Route::view('/', 'welcome');
+// Route::view('/', 'welcome');
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+
 
 
 Route::get('dashboard', UserDashboard::class)

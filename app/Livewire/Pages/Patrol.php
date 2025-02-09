@@ -144,9 +144,16 @@ class Patrol extends Component
             'date_range_start' => 'required',
             'date_range_end' => 'required',
         ]);
-        $reports = Reports::whereBetween('date_reported', [$this->date_range_start, $this->date_range_end])->get();
-        // dd($reports);
-        $pdf = PDF::loadView('pdf.patrol-pdf', ['reports' => $reports]);
+        $reports = Reports::with('user', 'images')
+            ->whereBetween('date_reported', [$this->date_range_start, $this->date_range_end])
+            ->get();
+            // foreach ($reports as $report) {
+            //     $report->image_before = $report->images->where('is_before', true)->first();
+            //     $report->image_after = $report->images->where('is_before', false)->first();
+            //     dd($report);
+            // }
+        // $report = $reports->images->where('is_before', true);
+        $pdf = PDF::loadView('pdf.patrol-pdf', ['reports' => $reports])->setPaper('a4', 'landscape');
 
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->output();
