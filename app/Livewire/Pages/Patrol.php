@@ -156,6 +156,7 @@ class Patrol extends Component
             // }
         // $report = $reports->images->where('is_before', true);
         $pdf = PDF::loadView('pdf.patrol-pdf', ['reports' => $reports])->setPaper('a4', 'landscape');
+        $this->showExport = false;
 
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->output();

@@ -2,13 +2,20 @@
 
 namespace App\Livewire\Pages\Admin;
 
+use App\Livewire\Forms\UserForm;
 use Livewire\Component;
 use App\Models\User;
 
 class Employee extends Component
 {
+    public UserForm $form;
+    public $showModal = false;
     public function render()
     {
+        $selectedRole = [
+            ['key' => 'admin', 'name' => 'Admin',],
+            ['key' => 'user', 'name' => 'User',]
+        ];
         $users = User::all();
         $headers = [
             ['key' => 'id', 'label' => 'ID', 'class' => 'text-black'],
@@ -21,7 +28,14 @@ class Employee extends Component
         [
             'users' => $users,
             'headers' => $headers,
+            'selectedRole' => $selectedRole,
         ]);
+    }
+
+    public function save()
+    {
+        $this->form->store();
+        $this->showModal = false;
     }
 
 }
