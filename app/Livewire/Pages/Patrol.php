@@ -10,9 +10,11 @@ use App\Models\ReportImages;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\WithPagination;
+use Mary\Traits\Toast;
 
 class Patrol extends Component
 {
+    use Toast;
     public PatrolForm $form;
     use WithFileUploads;
     use WithPagination;
@@ -21,6 +23,7 @@ class Patrol extends Component
     public bool $showDelete = false;
     public bool $showFinish = false;
     public bool $showExport = false;
+    public bool $showImage = false;
 
 
     public $reportIdToDelete;
@@ -32,6 +35,8 @@ class Patrol extends Component
 
     public $date_range_start;
     public $date_range_end;
+
+    public $selectedImage;
 
 
     public $library = []; // Metadata library untuk preview
@@ -76,6 +81,7 @@ class Patrol extends Component
     public function save()
     {
         $this->form->store();
+        $this->success('Report submitted successfully.', css: 'bg-green-500 text-white');
         $this->showModal = false;
     }
 
@@ -111,9 +117,12 @@ class Patrol extends Component
             $this->uploadImage($report->id, $this->image_path, false);
             $this->image_path = null;
             $this->showFinish = false;
-            session()->flash('message', 'Report resolved successfully.');
+            $this->success(
+                'Report resolved successfully.',
+                css: 'bg-green-500 text-white'
+            );
         } else {
-            session()->flash('message', 'Report not found.');
+            $this->error('Report resolved failed.');
         }
     }
 
@@ -146,16 +155,24 @@ class Patrol extends Component
             'date_range_start' => 'required',
             'date_range_end' => 'required',
         ]);
+
         $reports = Reports::with('user', 'images')
-            ->whereBetween('date_reported', [$this->date_range_start, $this->date_range_end])
-            ->get();
-            // foreach ($reports as $report) {
-            //     $report->image_before = $report->images->where('is_before', true)->first();
-            //     $report->image_after = $report->images->where('is_before', false)->first();
-            //     dd($report);
-            // }
-        // $report = $reports->images->where('is_before', true);
+        ->whereBetween('date_reported', [$this->date_range_start, $this->date_range_end])
+        ->get();
+
+        if ($reports->isEmpty()) {
+            $this->error(
+                // tidak ada data yang ditemukan dengan range tanggal tersebut dalam bahasa inggris
+                'No data found for date range ' . $this->date_range_start . ' - ' . $this->date_range_end,
+                css: 'bg-red-500 text-white'
+            );
+            $this->showExport = false;
+            return;
+        }
+
         $pdf = PDF::loadView('pdf.patrol-pdf', ['reports' => $reports])->setPaper('a4', 'landscape');
+        //jika pdf berhasil dibuat, maka menampilkan toast message
+        $this->success('PDF generated successfully.');
         $this->showExport = false;
 
         return response()->streamDownload(function () use ($pdf) {
@@ -166,5 +183,11 @@ class Patrol extends Component
     public function confirmExport()
     {
         $this->showExport = false;
+    }
+
+    public function showImages($imagePath)
+    {
+        $this->selectedImage = $imagePath;
+        $this->showImage = true;
     }
 }

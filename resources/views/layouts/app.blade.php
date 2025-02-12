@@ -25,6 +25,7 @@
 
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
+        <x-mary-toast />
         <livewire:layout.navigation />
 
         <!-- Page Heading -->

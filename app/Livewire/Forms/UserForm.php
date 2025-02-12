@@ -14,7 +14,7 @@ class UserForm extends Form
     public string $role = '';
 
     public function store() {
-        dd($this->role);
+        // dd($this->role);
         $this->validate([
             'name' => 'required',
             'email' => 'required|email',
@@ -32,22 +32,7 @@ class UserForm extends Form
         session()->flash('message', 'User created.');
     }
 
-    public function update($id) {
-        $this->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'role' => 'required',
-        ]);
 
-        $user = User::find($id);
-        $user->update([
-            'name' => $this->name,
-            'email' => $this->email,
-            'role' => $this->role,
-        ]);
-
-        session()->flash('message', 'User updated.');
-    }
 
     public function resetPassword($id) {
         $this->validate([

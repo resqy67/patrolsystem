@@ -35,9 +35,9 @@
                                 separator title="Export PDF">
                                 <x-mary-form wire:submit="export">
                                     <x-mary-datepicker label="Dari Bulan" wire:model="date_range_start"
-                                        :config="$config2" />
+                                        :config="$config1" />
                                     <x-mary-datepicker label="Sampai Bulan" wire:model="date_range_end"
-                                        :config="$config2" />
+                                        :config="$config1" />
                                     <x-slot:actions>
                                         <x-mary-button label="Cancel" @click="$wire.showExport = false" />
                                         <x-mary-button label="Export" class="btn-primary" type="submit"
@@ -68,7 +68,7 @@
                                     @foreach ($report->images as $image)
                                         @if ($image->is_before)
                                             <img src="{{ asset('storage/' . $image->image_path) }}" alt="Before Image"
-                                                class="w-32 h-32 object-cover">
+                                                class="w-32 h-32 object-cover hover-zoom cursor-pointer" />
                                         @endif
                                     @endforeach
                                 @endscope
@@ -76,7 +76,7 @@
                                     @foreach ($report->images as $image)
                                         @if ($image->is_before === 0)
                                             <img src="{{ asset('storage/' . $image->image_path) }}" alt="After Image"
-                                                class="w-32 h-32 object-cover">
+                                                class="w-32 h-32 object-cover hover-zoom cursor-pointer" />
                                         @endif
                                     @endforeach
                                 @endscope
@@ -116,6 +116,12 @@
                         <x-slot:actions>
                             <x-mary-button label="Cancel" @click="$wire.showDelete = false" />
                             <x-mary-button label="Confirm" class="btn-primary" wire:click="delete" spinner="delete" />
+                        </x-slot:actions>
+                    </x-mary-modal>
+                    <x-mary-modal wire:model="showImage" class="backdrop-blur" title="Full Image" separator>
+                        <img src="{{ $selectedImage }}" alt="Full Image" class="w-full h-auto" />
+                        <x-slot:actions>
+                            <x-mary-button label="Close" @click="$wire.showImage = false" />
                         </x-slot:actions>
                     </x-mary-modal>
                 </div>
