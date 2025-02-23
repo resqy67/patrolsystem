@@ -34,9 +34,9 @@
                             <x-mary-modal wire:model="showExport" class="backdrop-blur" subtitle="Livewire example"
                                 separator title="Export PDF">
                                 <x-mary-form wire:submit="export">
-                                    <x-mary-datepicker label="Dari Bulan" wire:model="date_range_start"
+                                    <x-mary-datepicker label="Dari Tanggal" wire:model="date_range_start"
                                         :config="$config1" />
-                                    <x-mary-datepicker label="Sampai Bulan" wire:model="date_range_end"
+                                    <x-mary-datepicker label="Sampai Tanggal" wire:model="date_range_end"
                                         :config="$config1" />
                                     <x-slot:actions>
                                         <x-mary-button label="Cancel" @click="$wire.showExport = false" />
