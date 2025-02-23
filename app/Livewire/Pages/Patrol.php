@@ -12,6 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 use Mary\Traits\Toast;
+use Carbon\Carbon;
 
 class Patrol extends Component
 {
@@ -161,11 +162,21 @@ class Patrol extends Component
             'date_range_start' => 'required',
             'date_range_end' => 'required',
         ]);
+        $dateStart = Carbon::parse($this->date_range_start)->format('Y-m-d');
+        $dateEnd = Carbon::parse($this->date_range_end)->format('Y-m-d');
+        if ($dateStart > $dateEnd) {
+            $this->error(
+                // tanggal awal tidak boleh lebih besar dari tanggal akhir dalam bahasa inggris
+                'Start date cannot be greater than end date.',
+                css: 'bg-red-500 text-white'
+            );
+            $this->showExport = false;
+            return;
+        }
 
         $reports = Reports::with('user', 'images')
-        ->whereBetween('date_reported', [$this->date_range_start, $this->date_range_end])
+        ->whereBetween('date_reported', [$dateStart, $dateEnd])
         ->get();
-
         if ($reports->isEmpty()) {
             $this->error(
                 // tidak ada data yang ditemukan dengan range tanggal tersebut dalam bahasa inggris
