@@ -189,7 +189,7 @@ class Patrol extends Component
 
         $pdf = PDF::loadView('pdf.patrol-pdf', ['reports' => $reports])->setPaper('a4', 'landscape');
         //jika pdf berhasil dibuat, maka menampilkan toast message
-        $this->success('PDF generated successfully.');
+        $this->success('PDF generated successfully.', css: 'text-white bg-green-500');
         $this->showExport = false;
 
         return response()->streamDownload(function () use ($pdf) {
