@@ -33,6 +33,12 @@
                         </div>
                     </div>
                     <x-mary-table :headers="$headers" :rows="$users" striped>
+                        @scope('cell_id', $user)
+                            {{ $loop->iteration }}
+                        @endscope
+                        @scope('cell_role', $user)
+                            {{ $user->role }}
+                        @endscope
                         @scope('cell_action', $user)
                             <x-mary-button class="bg-blue-500 text-white" label="Edit" @click="$wire.modalUpdate({{ $user->id }})" />
                             <x-mary-button class="bg-red-500 text-white" label="Delete" @click="$wire.modalDelete({{ $user->id }})" />
