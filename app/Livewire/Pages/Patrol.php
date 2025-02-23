@@ -9,6 +9,7 @@ use App\Models\Reports;
 use App\Models\ReportImages;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 use Mary\Traits\Toast;
 
@@ -68,7 +69,12 @@ class Patrol extends Component
             ['key' => 'status', 'label' => 'Status', 'class' => 'w-32 text-black'],
             ['key' => 'action', 'label' => 'Aksi', 'class' => 'w-72 text-black'],
         ];
-        $reports = Reports::with('user', 'images')->paginate(10);
+        // $reports = Reports::with('user', 'images')->paginate(10);
+        if ( Auth::user()->role === 'admin') {
+            $reports = Reports::with('user', 'images')->paginate(10);
+        } else {
+            $reports = Reports::with('user', 'images')->where('user_id', Auth::user()->id)->paginate(10);
+        }
         // dd($reports);
         return view('livewire.pages.patrol', [
             'reports' => $reports,
