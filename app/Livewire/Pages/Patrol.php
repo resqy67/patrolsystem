@@ -118,7 +118,7 @@ class Patrol extends Component
         if ($report) {
             $report->update([
                 'status' => 'resolved',
-                'date_resolved' => $this->date_resolved,
+                'date_resolved' => Carbon::parse($this->date_resolved)->format('Y-m-d'),
             ]);
             Log::info('Uploading image for resolved report:', ['report_id' => $report->id]);
             $this->uploadImage($report->id, $this->image_path, false);

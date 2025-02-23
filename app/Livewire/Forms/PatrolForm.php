@@ -9,7 +9,7 @@ use App\Models\Reports;
 use App\Models\ReportImages;
 // use App\Livewire\Forms\Auth;
 use Illuminate\Support\Facades\Auth;
-
+use Carbon\Carbon;
 
 class PatrolForm extends Form
 {
@@ -41,7 +41,7 @@ class PatrolForm extends Form
             'company_name' => $this->company_name,
             'location' => $this->location,
             'description_of_problem' => $this->description_of_problem,
-            'date_to_be_resolved' => $this->date_to_be_resolved,
+            'date_to_be_resolved' => Carbon::parse($this->date_to_be_resolved)->format('Y-m-d'),
             'status' => 'open',
             'user_id' => Auth::User()->id,
             'date_reported' => now()->toDateString(),
