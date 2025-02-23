@@ -55,6 +55,9 @@
                             <div class="text-center text-gray-500">Data tidak ditemukan</div>
                         @else
                             <x-mary-table :headers="$headers" :rows="$reports" no-hover with-pagination>
+                                @scope('cell_id', $report)
+                                    {{ $loop->iteration }}
+                                @endscope
                                 @scope('cell_name', $report)
                                     {{ $report->user->name }}
                                 @endscope
